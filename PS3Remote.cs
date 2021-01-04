@@ -23,13 +23,9 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Timers;
-
+using System.Runtime.InteropServices;
 using HidLibrary;
-using WindowsAPI;
-
-using InTheHand.Net;
-using InTheHand.Net.Bluetooth;
-using InTheHand.Net.Sockets;
+using DisableDevice;
 
 namespace PS3BluMote
 {
@@ -367,38 +363,28 @@ namespace PS3BluMote
 
             if (hidRemote == null) timerFindRemote.Start();
         }
+
         private void timerHibernation_Elapsed(object sender, ElapsedEventArgs e)
         {
-            timerHibernation.Stop();
-            DebugLog.write("Attempting to hibernate remote");
-
-            if (_btAddress.Length>0)
+            try
             {
-                try
+                if (hidRemote != null)
                 {
-                    if (SaveDevicesInsertionSounds())
-                    {
-                        DebugLog.write("Disabling device connect/disconnect sounds");
-                        RegUtils.SetDevConnectedSound("");
-                        RegUtils.SetDevDisconnectedSound("");
-                        // Values are restored in ReadButton Data, because, it seems that this method might end before the device is actually Reconnected
-                    }
+                    if (DebugLog.isLogging) DebugLog.write("Attempting to hibernate remote");
 
-                    BTUtils.HibernatePS3Remote(false, _btAddress, null);
-                    SleepState = RemoteBtStates.Hibernated;
-                    timerFindRemote.Interval = 300;
-
-                    DebugLog.write("Hibernating Done");
-
+                    DeviceHelper.SetDeviceEnabled(new Guid("{745a17a0-74d3-11d0-b6fe-00a0c90f57da}"), @"BTHENUM\{00001124-0000-1000-8000-00805F9B34FB}_VID&0002054C_PID&0306\7&2B2DAFC8&0&00214FAF2682_C00000000", false);
+                    System.Threading.Thread.Sleep(1500);
+                    DeviceHelper.SetDeviceEnabled(new Guid("{745a17a0-74d3-11d0-b6fe-00a0c90f57da}"), @"BTHENUM\{00001124-0000-1000-8000-00805F9B34FB}_VID&0002054C_PID&0306\7&2B2DAFC8&0&00214FAF2682_C00000000", true);
                 }
-                catch (Exception ex)
-                {
-                    DebugLog.write("Unable to hibernate remote" + ex.Message);
-                }
-
             }
-            else DebugLog.write("Wrong format for BT Address");
+            catch (Exception ex)
+            {
+                if (DebugLog.isLogging) DebugLog.write("Unable to hibernate remote:" + ex.Message);
+            }
+            timerFindRemote.Enabled = true;
+            timerHibernation.Enabled = false;
         }
+
         private void timerGetSleepState_Elapsed(object sender, ElapsedEventArgs e)
         {
             timerGetSleepState.Stop();
@@ -410,6 +396,7 @@ namespace PS3BluMote
             }
 
         }
+
         private void timerSleepButton_Elapsed(object sender, ElapsedEventArgs e)
         {
             DebugLog.write("The remote has been hibernated manually");
