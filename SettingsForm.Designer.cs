@@ -210,6 +210,7 @@ namespace PS3BluMote
             this.lvKeys.CheckBoxes = true;
             this.lvKeys.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvKeys.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.lvKeys.HideSelection = false;
             this.lvKeys.Location = new System.Drawing.Point(0, 0);
             this.lvKeys.MultiSelect = false;
             this.lvKeys.Name = "lvKeys";
@@ -304,9 +305,10 @@ namespace PS3BluMote
             this.lblCopyright.AutoSize = true;
             this.lblCopyright.Location = new System.Drawing.Point(10, 420);
             this.lblCopyright.Name = "lblCopyright";
-            this.lblCopyright.Size = new System.Drawing.Size(149, 39);
+            this.lblCopyright.Size = new System.Drawing.Size(241, 39);
             this.lblCopyright.TabIndex = 5;
-            this.lblCopyright.Text = "PS3BluMote v2.1.\r\nCopyright © Ben Barron 2012.\r\nHibernation by Miljbee";
+            this.lblCopyright.Text = "PS3BluMote v2.1.\r\nCopyright © Ben Barron 2012.\r\nHibernation by Miljbee, DeviceHel" +
+    "per by TinyThor";
             // 
             // llblOpenFolder
             // 
