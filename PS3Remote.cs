@@ -372,9 +372,9 @@ namespace PS3BluMote
                 {
                     if (DebugLog.isLogging) DebugLog.write("Attempting to hibernate remote");
 
-                    DeviceHelper.SetDeviceEnabled(new Guid("{745a17a0-74d3-11d0-b6fe-00a0c90f57da}"), @"BTHENUM\{00001124-0000-1000-8000-00805F9B34FB}_VID&0002054C_PID&0306\7&2B2DAFC8&0&00214FAF2682_C00000000", false);
+                    DeviceHelper.SetDeviceEnabled(new Guid(Properties.Settings.Default.ClassGuid), @Properties.Settings.Default.devicePath, false);
                     System.Threading.Thread.Sleep(1500);
-                    DeviceHelper.SetDeviceEnabled(new Guid("{745a17a0-74d3-11d0-b6fe-00a0c90f57da}"), @"BTHENUM\{00001124-0000-1000-8000-00805F9B34FB}_VID&0002054C_PID&0306\7&2B2DAFC8&0&00214FAF2682_C00000000", true);
+                    DeviceHelper.SetDeviceEnabled(new Guid(Properties.Settings.Default.ClassGuid), @Properties.Settings.Default.devicePath, true);
                 }
             }
             catch (Exception ex)

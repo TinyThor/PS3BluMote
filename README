@@ -94,8 +94,8 @@ and everytime you press the button it will open the application.
 
 PS3BluMote will try to hibernate the remote as soon as it hasn't receive any events from the remote since some time.
 The amount of time to wait before hibernating the remote can be changed in the settings screen.
-
-To hibernate the remote, PS3BluMote disables and then enable the HID device.
+To hibernate the remote, PS3BluMote disables and then enable the HID device. To get this working please change the
+device path in the PS3BluMote.exe.config file.
 
 When the remote is hibernated, pressing any key will wake it up. PS3BluMote will get this key with a 500-1000ms delay.
 

@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="PS3BluMote.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ClassGuid" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">{745a17a0-74d3-11d0-b6fe-00a0c90f57da}</Value>
+    </Setting>
+    <Setting Name="devicePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">BTHENUM\{00001124-0000-1000-8000-00805F9B34FB}_VID&amp;0002054C_PID&amp;0306\7&amp;2B2DAFC8&amp;0&amp;00214FAF2682_C00000000</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
