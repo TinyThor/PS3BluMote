@@ -44,6 +44,7 @@ namespace PS3BluMote
         private Timer timerHibernation = null;
         private Timer timerGetSleepState = null;
         private Timer timerSleepButton = null;
+        private Timer timerFixRemote = null;
         private int vendorId = 0x054c;
         private int productId = 0x0306;
         private Button lastButton = Button.Angle;
@@ -147,6 +148,12 @@ namespace PS3BluMote
             timerSleepButton.Interval = 6000;
             timerSleepButton.AutoReset = false;
             timerSleepButton.Elapsed += new ElapsedEventHandler(timerSleepButton_Elapsed);
+
+            timerFixRemote = new Timer();
+            timerFixRemote.Interval = 60000;
+            timerFixRemote.AutoReset = false;
+            timerFixRemote.Elapsed += new ElapsedEventHandler(timerFixRemote_Elapsed);
+            timerFixRemote.Enabled = true;
 
             insertSound = "";
             removeSound = "";
@@ -373,14 +380,19 @@ namespace PS3BluMote
                     if (DebugLog.isLogging) DebugLog.write("Attempting to hibernate remote");
 
                     DeviceHelper.SetDeviceEnabled(new Guid(Properties.Settings.Default.ClassGuid), @Properties.Settings.Default.devicePath, false);
-                    System.Threading.Thread.Sleep(1500);
+                    System.Threading.Thread.Sleep(3000);
                     DeviceHelper.SetDeviceEnabled(new Guid(Properties.Settings.Default.ClassGuid), @Properties.Settings.Default.devicePath, true);
                 }
             }
             catch (Exception ex)
             {
                 if (DebugLog.isLogging) DebugLog.write("Unable to hibernate remote:" + ex.Message);
+                timerFixRemote.Enabled = true;
+                timerFindRemote.Enabled = false;
+                timerHibernation.Enabled = false;
+                return;
             }
+
             timerFindRemote.Enabled = true;
             timerHibernation.Enabled = false;
         }
@@ -404,7 +416,29 @@ namespace PS3BluMote
             SleepState = RemoteBtStates.Hibernated;
         }
 
-        private bool SaveDevicesInsertionSounds()
+        private void timerFixRemote_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            DebugLog.write("Enable remote as a fix");
+
+            try
+            {
+                if (hidRemote != null)
+                {
+                    DeviceHelper.SetDeviceEnabled(new Guid(Properties.Settings.Default.ClassGuid), @Properties.Settings.Default.devicePath, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (DebugLog.isLogging) DebugLog.write("Unable to hibernate remote:" + ex.Message);
+                timerFixRemote.Enabled = true;
+            }
+
+            timerFindRemote.Enabled = true;
+            timerHibernation.Enabled = false;
+            timerFixRemote.Enabled = false;
+        }
+
+            private bool SaveDevicesInsertionSounds()
         {
             try
             {
